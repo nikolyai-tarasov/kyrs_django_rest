@@ -32,17 +32,21 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework_simplejwt",
     "drf_yasg",
+    "django_celery_beat",
+
 ]
 
+AUTH_USER_MODEL = "users.User"
+
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
@@ -130,14 +134,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = (BASE_DIR / 'static',)
 
-
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media', )
-
-AUTH_USER_MODEL = 'users.User'
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
@@ -155,3 +155,6 @@ EMAIL_USE_SSL = True if os.getenv('EMAIL_USE_SSL') == "True" else False
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+TELEGRAM_URL ="https://api.telegram.org/bot"
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
