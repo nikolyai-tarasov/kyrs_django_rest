@@ -1,7 +1,7 @@
 FROM nginx:latest
 
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+RUN mkdir -p /app/staticfiles
 
-COPY ../html/ /usr/share/nginx/html/
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80

@@ -31,10 +31,10 @@ services:
       - POSTGRES_PASSWORD=${PASSWORD}
 
   redis:
-    container_name: redis
-    image: redis:6
-    volumes:
-      - redis_data:/data
+    image: redis:latest
+    restart: on-failure
+    expose:
+      - "6379"
 
   celery:
     container_name: celery
