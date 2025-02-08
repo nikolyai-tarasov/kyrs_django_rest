@@ -176,6 +176,11 @@ CORS_ALLOWED_ORIGINS = [
     "<http://localhost:8000>",
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = \
+[
+    r"^http://localhost:8000$",
+]
+
 CSRF_TRUSTED_ORIGINS = [
     "https://read-and-write.example.com",
 ]
