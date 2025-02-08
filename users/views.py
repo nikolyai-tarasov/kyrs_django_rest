@@ -8,6 +8,7 @@ from users.serializers import UserSerializer, UserLimitedSerializer
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     """Отображение либо редактирование информации об авторизованном пользователе"""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsUserOwner, IsAuthenticated)
@@ -15,6 +16,7 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
 class UserListAPIView(ListAPIView):
     """Список пользователей"""
+
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
 
@@ -26,6 +28,7 @@ class UserListAPIView(ListAPIView):
 
 class UserCreateAPIView(CreateAPIView):
     """Создание пользователя"""
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (AllowAny,)

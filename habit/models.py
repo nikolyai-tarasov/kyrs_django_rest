@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 
 
-
 NULLABLE = {"blank": True, "null": True}
 
 

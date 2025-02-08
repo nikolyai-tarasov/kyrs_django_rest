@@ -7,15 +7,13 @@ from users.models import User
 
 
 class HabitTestCase(APITestCase):
-    """ Тестирование модели Habits """
+    """Тестирование модели Habits"""
 
     def setUp(self):
-        """ Создание тестовой модели Пользователя (с авторизацией) и Привычки """
+        """Создание тестовой модели Пользователя (с авторизацией) и Привычки"""
 
         self.user = User.objects.create(
-            email="test@test.com",
-            password="testpassword",
-            tg_chat_id='1567728836'
+            email="test@test.com", password="testpassword", tg_chat_id="1567728836"
         )
         self.client.force_authenticate(user=self.user)
 
@@ -25,7 +23,7 @@ class HabitTestCase(APITestCase):
             time="18:00:00",
             action="Пойти в магазин за покупками",
             periodicity=1,
-            duration=60
+            duration=60,
         )
 
         self.habit_nice_false = Habits.objects.create(
@@ -37,11 +35,11 @@ class HabitTestCase(APITestCase):
             related=self.habit,
             periodicity=1,
             duration=60,
-            is_public=False
+            is_public=False,
         )
 
     def test_create_habit(self):
-        """ Тестирование создания привычки """
+        """Тестирование создания привычки"""
 
         url = reverse("habits:habits_create")
         data = {
@@ -50,7 +48,7 @@ class HabitTestCase(APITestCase):
             "time": "18:00:00",
             "action": "Пойти в магазин за покупками",
             "duration": 60,
-            "periodicity": 1
+            "periodicity": 1,
         }
 
         response = self.client.post(url, data=data)
@@ -65,7 +63,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(data.get("periodicity"), 1)
 
     def test_create_habit_duration_periodicy_validator(self):
-        """ Тестирование работы валидаиора """
+        """Тестирование работы валидаиора"""
 
         url = reverse("habits:habits_create")
         data = {
@@ -74,7 +72,7 @@ class HabitTestCase(APITestCase):
             "time": "18:00:00",
             "action": "Пойти в магазин за покупками",
             "duration": 180,
-            "periodicity": 8
+            "periodicity": 8,
         }
 
         response = self.client.post(url, data=data)
@@ -83,8 +81,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_habit_logic_good_habits_1(self):
-        """ Тестирование работы валидатора логики создания привычек """
-
+        """Тестирование работы валидатора логики создания привычек"""
 
         url = reverse("habits:habits_create")
         data = {
@@ -95,15 +92,14 @@ class HabitTestCase(APITestCase):
             "is_nice": True,
             "duration": 60,
             "periodicity": 1,
-            "prize": "выпить коньяка"
+            "prize": "выпить коньяка",
         }
 
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_habit_logic_good_habits_2(self):
-        """ Тестирование работы валидатора логики создания привычек """
-
+        """Тестирование работы валидатора логики создания привычек"""
 
         url = reverse("habits:habits_create")
         data2 = {
@@ -115,14 +111,13 @@ class HabitTestCase(APITestCase):
             "related": self.habit,
             "duration": 60,
             "periodicity": 1,
-            "prize": "выпить еще больше коньяка"
+            "prize": "выпить еще больше коньяка",
         }
         response = self.client.post(url, data=data2)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_habit_logic_good_habits_3(self):
-        """ Тестирование работы валидатора логики создания привычек """
-
+        """Тестирование работы валидатора логики создания привычек"""
 
         url = reverse("habits:habits_create")
 
@@ -139,19 +134,17 @@ class HabitTestCase(APITestCase):
         response = self.client.post(url, data=data3)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-
-
     def test_list_habit(self):
-        """ Тестирование вывода всех привычек """
-        url = reverse('habits:habits_list')
+        """Тестирование вывода всех привычек"""
+        url = reverse("habits:habits_list")
         response = self.client.get(url)
         data = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(2, data.get('count'))
+        self.assertEqual(2, data.get("count"))
 
     def test_retrieve_habit(self):
-        """ Тестирование просмотра одной привычки """
+        """Тестирование просмотра одной привычки"""
 
         url = reverse("habits:habits_retrieve", args=(self.habit.pk,))
         response = self.client.get(url)
@@ -166,7 +159,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(data.get("periodicity"), self.habit.periodicity)
 
     def test_update_habit(self):
-        """ Тестирование изменений привычки """
+        """Тестирование изменений привычки"""
 
         url = reverse("habits:habits_update", args=(self.habit.pk,))
         data = {
@@ -189,7 +182,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(data.get("periodicity"), 1)
 
     def test_delete_habit(self):
-        """ Тестирование удаления привычки """
+        """Тестирование удаления привычки"""
 
         url = reverse("habits:habits_delete", args=(self.habit.pk,))
         response = self.client.delete(url)
@@ -197,10 +190,10 @@ class HabitTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_list_public_habit(self):
-        """ Тестирование вывода публичных привычек """
-        url = reverse('habits:public_list')
+        """Тестирование вывода публичных привычек"""
+        url = reverse("habits:public_list")
         response = self.client.get(url)
         data = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(1, data.get('count'))
+        self.assertEqual(1, data.get("count"))
