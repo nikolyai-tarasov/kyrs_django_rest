@@ -119,7 +119,8 @@
 
 *   Django
 *   Django REST Framework
-*   [Список других зависимостей]
+*   
+
 
 Полный список зависимостей можно найти в файле `requirements.txt`.
 
@@ -130,4 +131,4 @@
 
 ## Авторы
 
-*   nikolyai-tarasov - [ссылка на ваш профиль GitHub]
+*   nikolyai-tarasov - 
